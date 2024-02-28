@@ -30,10 +30,15 @@ async def start_keyboard():
         "Reference Menu ",
         callback_data="reference_menu"
     )
+    reference_list_call = InlineKeyboardButton(
+        "Список реферралов ",
+        callback_data="reference_list"
+    )
     markup.add(questionnaire_button)
     markup.add(check_ban_button)
     markup.add(registration_button)
     markup.add(my_profile_button)
     markup.add(profiles_button)
     markup.add(reference_button)
+    markup.add(reference_list_call)
     return markup

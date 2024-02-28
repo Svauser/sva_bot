@@ -98,6 +98,7 @@ async def load_photo(message: types.Message,
             text="Регистрация прошла успешно!"
         )
         await state.finish()
+
 def register_registration_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(
         registration_start,

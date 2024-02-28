@@ -78,7 +78,6 @@ async def random_filter_profile_call(call: types.CallbackQuery):
 
 
 async def detect_like_call(call: types.CallbackQuery):
-
     owner = re.sub("like_", "", call.data)
     print(owner)
     db = Database()
@@ -127,9 +126,9 @@ def register_profile_handler(dp: Dispatcher):
     )
     dp.register_callback_query_handler(
         detect_like_call,
-        lambda call: 'like_' in call.data
+        lambda call: 'like_' in call.data and call.data.startswith('like_')
     )
     dp.register_callback_query_handler(
         detect_dislike_call,
-        lambda call: 'dislike_' in call.data
+        lambda call: 'dislike_' in call.data and call.data.startswith('dislike_')
     )

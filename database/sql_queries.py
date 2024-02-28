@@ -10,7 +10,7 @@ UNIQUE (TELEGRAM_ID)
 )
 """
 INSERT_USER_QUERY = """
-INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?)
+INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?,?,?)
 """
 CREATE_BAN_USER_TABLE_QUERY = """
 CREATE TABLE IF NOT EXISTS ban
@@ -96,8 +96,62 @@ INSERT INTO dislike_profile VALUES (?,?,?)
 FILTER_LEFT_JOIN_PROFILE_QUERY = """
 SELECT * FROM profile
 LEFT JOIN dislike_profile ON profile.TELEGRAM_ID = dislike_profile.OWNER_TELEGRAM_ID
-AND dislike_profile.LIKER_TELEGRAM_ID = ?
+AND dislike_profile.DISLIKER_TELEGRAM_ID = ?
 WHERE dislike_profile.ID IS NULL
 AND profile.TELEGRAM_ID != ?
 """
+ALTER_USER_TABLE = """
+ALTER TABLE telegram_users ADD COLUMN REFERENCE_LINK TEXT
+"""
+ALTER_USER_V2_TABLE = """
+ALTER TABLE telegram_users ADD COLUMN BALANCE INTEGER
+"""
+
+UPDATE_REFERENCE_LINK_QUERY = """
+UPDATE telegram_users SET REFERENCE_LINK = ? WHERE TELEGRAM_ID = ?
+"""
+
+SELECT_USER_QUERY = """
+SELECT * FROM telegram_users WHERE TELEGRAM_ID = ?
+"""
+
+CREATE_REFERENCE_TABLE_QUERY = """
+CREATE TABLE IF NOT EXISTS referral
+(
+ID INTEGER PRIMARY KEY,
+OWNER_TELEGRAM_ID INTEGER,
+REFERRAL_TELEGRAM_ID INTEGER,
+UNIQUE (OWNER_TELEGRAM_ID, REFERRAL_TELEGRAM_ID)
+)
+"""
+
+INSERT_REFERENCE_QUERY = """
+INSERT INTO referral VALUES (?,?,?)
+"""
+
+DOUBLE_SELECT_REFERRAL_USER_QUERY = """
+SELECT 
+    COALESCE(telegram_users.BALANCE, 0) as BALANCE,
+    COUNT(referral.ID) as total_referrals
+FROM
+    telegram_users
+LEFT JOIN
+    referral on telegram_users.TELEGRAM_ID = referral.OWNER_TELEGRAM_ID
+WHERE 
+    telegram_users.TELEGRAM_ID = ?
+"""
+
+SELECT_USER_BY_LINK_QUERY = """
+SELECT * FROM telegram_users WHERE REFERENCE_LINK = ?
+"""
+
+UPDATE_USER_BALANCE_QUERY = """
+UPDATE telegram_users SET BALANCE = COALESCE(BALANCE, 0) + 100 WHERE TELEGRAM_ID = ?
+"""
+GET_REFERRALS = """SELECT telegram_users.first_name, telegram_users.last_name, telegram_users.username
+FROM referral
+JOIN telegram_users ON referral.REFERRAL_TELEGRAM_ID = telegram_users.ID
+WHERE referral.OWNER_TELEGRAM_ID = :owner_id
+"""
+
 

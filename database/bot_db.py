@@ -16,6 +16,7 @@ class Database:
         self.connection.execute(sql_queries.CREATE_LIKE_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_DISLIKE_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_REFERENCE_TABLE_QUERY)
+        self.connection.execute(sql_queries.CREATE_NEWS_TABLE_QUERY)
         self.connection.commit()
         try:
             self.connection.execute(sql_queries.ALTER_USER_TABLE)
@@ -27,7 +28,7 @@ class Database:
     def sql_insert_user(self, tg_id, username, first_name, last_name):
         self.cursor.execute(
             sql_queries.INSERT_USER_QUERY,
-            (None, tg_id, username, first_name, last_name,None,0)
+            (None, tg_id, username, first_name, last_name, None, 0)
         )
         self.connection.commit()
 
@@ -177,3 +178,11 @@ class Database:
                          )
         referrals = self.cursor.fetchall()
         return referrals
+
+    def sql_insert_news(self, link):
+        self.cursor.execute(
+                sql_queries.INSERT_NEWS_QUERY,
+                ( link,)
+            )
+        self.connection.commit()
+        print("Новость успешно вставлена.")

@@ -34,6 +34,10 @@ async def start_keyboard():
         "Список реферралов ",
         callback_data="reference_list"
     )
+    news_button = InlineKeyboardButton(
+        "Новости ",
+        callback_data="latest_news"
+    )
     markup.add(questionnaire_button)
     markup.add(check_ban_button)
     markup.add(registration_button)
@@ -41,4 +45,5 @@ async def start_keyboard():
     markup.add(profiles_button)
     markup.add(reference_button)
     markup.add(reference_list_call)
+    markup.add(news_button)
     return markup

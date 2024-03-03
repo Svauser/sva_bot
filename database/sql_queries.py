@@ -153,5 +153,16 @@ FROM referral
 JOIN telegram_users ON referral.REFERRAL_TELEGRAM_ID = telegram_users.ID
 WHERE referral.OWNER_TELEGRAM_ID = :owner_id
 """
+CREATE_NEWS_TABLE_QUERY = """
+CREATE TABLE IF NOT EXISTS news
+(
+ID INTEGER PRIMARY KEY AUTOINCREMENT,
+link TEXT
+)
+"""
+INSERT_NEWS_QUERY = """
+INSERT INTO News (link) 
+VALUES (?)
+"""
 
 

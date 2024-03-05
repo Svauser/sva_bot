@@ -43,23 +43,23 @@ async def reference_link_call(call: types.CallbackQuery):
         )
         await bot.send_message(
             chat_id=call.from_user.id,
-            text=f"Here is your new link: {link}"
+            text=f"Ваша новая ссылка: {link}"
         )
     else:
         await bot.send_message(
             chat_id=call.from_user.id,
-            text=f"Here is your old link: {user['link']}"
+            text=f"Ваша ссылка: {user['link']}"
         )
 
 async def reference_list_call(call: types.CallbackQuery):
     db = bot_db.Database()
     referrals = db.sql_get_referrals(call.from_user.id)
     if referrals:
-        message_text = "Your referrals:\n"
+        message_text = "Ваши реферралы:\n"
         for referral in referrals:
-            message_text += f"{referral['first_name']} {referral['last_name']} (@{referral['username']})\n"
+            message_text += f"{referral['referral_telegram_id']}\n"
     else:
-        message_text = "You have no referrals."
+        message_text = "У вас нет реферралов."
     await bot.send_message(
         chat_id=call.from_user.id,
         text=message_text

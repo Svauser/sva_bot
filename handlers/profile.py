@@ -37,8 +37,8 @@ async def my_profile_call(call: types.CallbackQuery):
     else:
         await bot.send_message(
             chat_id=call.from_user.id,
-            text="U did not registered\n"
-                 "Please register to view ur profile"
+            text="Выне зарегистрированы\n"
+                 "Пожалуйста,зарегистрируйтесь"
         )
 
 
@@ -54,7 +54,7 @@ async def random_filter_profile_call(call: types.CallbackQuery):
     if not profiles:
         await bot.send_message(
             chat_id=call.from_user.id,
-            text='U have liked all profiles, come later!'
+            text='Профили закончились ,приходите позже!'
         )
         return
 
@@ -89,7 +89,7 @@ async def detect_like_call(call: types.CallbackQuery):
     except sqlite3.IntegrityError:
         await bot.send_message(
             chat_id=call.from_user.id,
-            text='U have liked this profile!'
+            text='Вы уже оценили данный профиль!'
         )
     finally:
         await call.message.delete()
@@ -109,7 +109,7 @@ async def detect_dislike_call(call: types.CallbackQuery):
     except sqlite3.IntegrityError:
         await bot.send_message(
             chat_id=call.from_user.id,
-            text='U have disliked this profile!'
+            text='Вы уже оценили данный профиль!'
         )
     finally:
         await call.message.delete()
@@ -130,5 +130,5 @@ def register_profile_handler(dp: Dispatcher):
     )
     dp.register_callback_query_handler(
         detect_dislike_call,
-        lambda call: 'dislike_' in call.data and call.data.startswith('dislike_')
+        lambda call: 'dislike_' in call.data and call.data.startswith('dis')
     )

@@ -27,7 +27,7 @@ async def start_keyboard():
         callback_data="random_profiles"
     )
     reference_button = InlineKeyboardButton(
-        "Reference Menu ",
+        "Меню рефералов ",
         callback_data="reference_menu"
     )
     reference_list_call = InlineKeyboardButton(
